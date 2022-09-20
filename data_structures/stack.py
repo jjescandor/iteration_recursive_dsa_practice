@@ -1,4 +1,4 @@
-from node import Node
+from data_structures.node import Node
 
 class InvalidOperationError(BaseException):
   pass
@@ -29,7 +29,7 @@ class Stack:
     return self.top.value
 
   def is_empty(self):
-    True if self.top is None else False
+    return True if self.top is None else False
     # if self.top is None:
     #   return True
     # else:
