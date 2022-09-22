@@ -212,8 +212,14 @@ def level_order_traversal(input_tree):
 #
 # Given a bst, return value the furthest removed from zero
 def bst_furthest_from_zero(input_tree): 
-    values = in_order_traversal(input_tree.root,[])
-    left, right = values[0], values[-1]
+    def traverse(node, values=[]):
+        if not node:
+            return
+        traverse(node.left, values)
+        values.append(node.value)
+        traverse(node.right, values)
+        return values[0], values[-1]
+    left, right = traverse(input_tree.root)
     return left if abs(right) > left else right
 
 
