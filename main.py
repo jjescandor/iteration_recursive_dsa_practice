@@ -125,15 +125,24 @@ def iterate_stack_recursively(input_stack, largest=0):
 # Iterate a queue iteratively and return the largest value
 # input_queue (7)->(2)->(13)->(9)->(3)
 def iterate_queue_iteratively(input_queue):
-    # code here, change return the largest number
-    return 0
+    max=input_queue.front.value
+    while not input_queue.is_empty():
+        if input_queue.front.value > max:
+            max = input_queue.front.value
+        input_queue.dequeue()
+    return max
 
 
 # Iterate a queue recursively and return the largest value
 # input_queue (7)->(2)->(13)->(9)->(3)
 def iterate_queue_recursively(input_queue, largest=0):
-    # code here, change return the largest number
-    return 0
+    if input_queue.is_empty():
+        return largest
+    else:
+        if input_queue.front.value > largest:
+            largest = input_queue.front.value
+        input_queue.dequeue()
+        return iterate_queue_recursively(input_queue, largest)
 
 
 # Perform a Pre-Order, In-Order, and Post-Order traversal of a binary tree.
@@ -215,7 +224,6 @@ def run_tests():
     print("LinkedList Smallest Value: {}".format(iterate_linkedlist_iteratively_small(input_linked_list)))
     print("LinkedList Remove Duplicate Value: {}".format(iterate_linkedlist_iteratively_duplicates(input_linked_list_2)))
     print("Furthest from zero: {}".format(iterate_linkedlist_furthest_from_zero(input_linked_list_3)))
-    # print("LinkedList Remove Duplicate Value: {}".format(iterate_linkedlist_iteratively_small(input_linked_list)))
     print("LinkedList Recursively Largest: {}".format(iterate_linkedlist_recursively(input_linked_list.head)))
     print("LinkedList Recursively Smallest: {}".format(iterate_linkedlist_recursively_smallest(input_linked_list_3.head)))
     # Stack Tests
@@ -226,7 +234,7 @@ def run_tests():
     # Queue Tests
     input_queue = make_queue()
     print("Queue Iteratively: {}".format(iterate_queue_iteratively(input_queue)))
-    input_queue = make_queue()
+    input_queue = make_queue2()
     print("Queue Recursively: {}".format(iterate_queue_recursively(input_queue)))
 
     # BinaryTree Order Traversal Tests
@@ -294,7 +302,7 @@ def make_stack_2():
     input_stack = Stack()
     input_stack.push(7)
     input_stack.push(2)
-    input_stack.push(13)
+    input_stack.push(14)
     input_stack.push(9)
     input_stack.push(3)
     return input_stack
@@ -305,6 +313,15 @@ def make_queue():
     input_queue.enqueue(7)
     input_queue.enqueue(2)
     input_queue.enqueue(13)
+    input_queue.enqueue(9)
+    input_queue.enqueue(3)
+    return input_queue
+
+def make_queue2():
+    input_queue = Queue()
+    input_queue.enqueue(7)
+    input_queue.enqueue(2)
+    input_queue.enqueue(14)
     input_queue.enqueue(9)
     input_queue.enqueue(3)
     return input_queue
