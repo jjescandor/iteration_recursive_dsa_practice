@@ -155,30 +155,51 @@ def iterate_queue_recursively(input_queue, largest=0):
 # Pre-Order Traveral
 # expected [4, 7, 3, 1, 18, 5, 11]
 def pre_order_traversal(input_node, values=[]):
-    # code here, return a list of pre-ordered values
+    if not input_node:
+        return
+    values.append(input_node.value)
+    pre_order_traversal(input_node.left, values)
+    pre_order_traversal(input_node.right, values)
     return values
 
 
 # In-Order Traveral
 # expected [3, 7, 1, 4, 5, 18, 11]
 def in_order_traversal(input_node, values=[]):
-    # code here, return a list of in-order values
+    if not input_node:
+        return
+    in_order_traversal(input_node.left, values)
+    values.append(input_node.value)
+    in_order_traversal(input_node.right, values)
     return values
 
 
 # Post-Order Traveral
 # expected [3, 1, 7, 5, 11, 18, 4]
 def post_order_traversal(input_node, values=[]):
-    # code here, return a list of post-ordered values
+    if not input_node:
+        return
+    post_order_traversal(input_node.left, values)
+    post_order_traversal(input_node.right, values)
+    values.append(input_node.value)
     return values
 
 
 # Level Order, or Breadth First, Traversal
 # expected [4, 7, 18, 3, 1, 5, 11]
 def level_order_traversal(input_tree):
-    # code here, return a list of values
-    return []
-
+    current, queue, visited = input_tree.root, Queue(), []
+    queue.enqueue(input_tree.root)
+    while not queue.is_empty():
+        current = queue.dequeue()
+        if not current:
+            return visited
+        visited.append(current.value)
+        if current.left:
+            queue.enqueue(current.left)
+        if current.right:
+            queue.enqueue(current.right)
+    return visited
 
 # ##################### NEW #####################################
 # Write a test to cover this
@@ -190,9 +211,10 @@ def level_order_traversal(input_tree):
 #               -21     5 9    17
 #
 # Given a bst, return value the furthest removed from zero
-def bst_contains(input_tree):
-    # code here, return value the furthest remove from zero
-    return None
+def bst_furthest_from_zero(input_tree): 
+    values = in_order_traversal(input_tree.root,[])
+    left, right = values[0], values[-1]
+    return left if abs(right) > left else right
 
 
 # Binary Search Tree for contains
@@ -204,8 +226,17 @@ def bst_contains(input_tree):
 #
 # Given a value return true or false if it's contained within the binary search tree
 def bst_contains(input_tree, value):
-    # code here, return true or false
-    return None
+    def traverse(node, value):
+        if not node:
+            return False
+        if node.value == value:
+            return True
+        if value > node.value:
+            return traverse(node.right, value)
+        if value < node.value:
+            return traverse(node.right, value)
+    return traverse(input_tree.root, value)
+
 
 
 # -----------------------------------------------------
@@ -244,8 +275,11 @@ def run_tests():
     print("Post-Order Traversal: \n{}".format(post_order_traversal(input_binary_tree.root)))
     print("Level-Order Traversal: \n{}".format(level_order_traversal(input_binary_tree)))
 
+
     # Binary Search Tree Contains and Depth Search Tests
     input_binary_search_tree = make_binary_search_tree()
+    input_binary_search_tree2 = make_binary_search_tree_2()
+    print("Binary Search Tree furthest from zero: {}".format(bst_furthest_from_zero(input_binary_search_tree2)))
     print("Binary Search Tree Contains 13: {}".format(bst_contains(input_binary_search_tree, 13)))
     print("Binary Search Tree Contains 11: {}".format(bst_contains(input_binary_search_tree, 11)))
 
@@ -354,6 +388,18 @@ def make_binary_search_tree():
     input_binary_search_tree.add(1, root)
     input_binary_search_tree.add(5, root)
     input_binary_search_tree.add(13, root)
+    input_binary_search_tree.add(9, root)
+    input_binary_search_tree.add(17, root)
+    return input_binary_search_tree
+
+def make_binary_search_tree_2():
+    input_binary_search_tree = BinarySearchTree()
+    input_binary_search_tree.add(7, None)
+    root = input_binary_search_tree.root
+    input_binary_search_tree.add(-3, root)
+    input_binary_search_tree.add(13, root)
+    input_binary_search_tree.add(-21, root)
+    input_binary_search_tree.add(5, root)
     input_binary_search_tree.add(9, root)
     input_binary_search_tree.add(17, root)
     return input_binary_search_tree
